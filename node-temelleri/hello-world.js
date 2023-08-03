@@ -1,0 +1,1 @@
+console.log("Merhaba Node.JS dünyası... Bu eğitimde Node.JS'i tanıyacağız..")
