@@ -4,15 +4,20 @@ var argv = require("yargs")
             name : {
                 demand : true,
                 description : 'Adinizi gireceginiz argumandir!!',
-                alias: 'n'
+                alias: 'n',
+                type: 'string'
             },
             lastname : {
                 demand : true,
                 description : 'Soyadinizi gireceginiz argumandir!!',
-                alias : 'l'
+                alias : 'l',
+                type: 'string'
             }
         }).help('help');
-    }).help("help")
+    })
+    .command('command', 'aciklama..', function(yargs){   
+    })
+    .help("help")
     .argv;
 var command = argv._[0];
 

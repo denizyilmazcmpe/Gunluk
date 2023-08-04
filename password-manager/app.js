@@ -1,6 +1,14 @@
 var storage = require("node-persist");
 storage.initSync();
 
+// create
+//      --name
+//      --username
+//      --password
+
+// get
+//      --name
+
 /*
 
 account.name : LinkedIn
