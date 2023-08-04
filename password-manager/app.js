@@ -1,4 +1,5 @@
 var storage = require("node-persist");
+var crypto = require("crypto-js");
 storage.initSync();
 var argv = require("yargs")
     .command('create', 'Yeni bir hesap olusturur..', function(yargs){
@@ -20,6 +21,12 @@ var argv = require("yargs")
                 alias : 'p',
                 description : 'Hesabiniza ait parola',
                 type : 'string'
+            },
+            masterPassword : {
+                demand: true,
+                alias : 'm',
+                description : 'İslem yapabilmek icin gerekli olan sifre',
+                type : 'string'
             }
         }).help('help');
     })
@@ -30,6 +37,12 @@ var argv = require("yargs")
                 alias : 'n',
                 description : 'Hesap adi (Twitter, Facebook..)',
                 type : 'string'
+            },
+            masterPassword : {
+                demand: true,
+                alias : 'm',
+                description : 'İslem yapabilmek icin gerekli olan sifre',
+                type : 'string'
             }
         }).help('help');
     }).help('help')
@@ -39,20 +52,21 @@ var argv = require("yargs")
 
     if(command === 'create' && typeof argv.name !== 'undefined' && argv.name.length > 0
     && typeof argv.username !== 'undefined' && argv.username.length > 0 
-    && typeof argv.password !== 'undefined' && argv.password.length > 0){
+    && typeof argv.password !== 'undefined' && argv.password.length > 0
+    && typeof argv.masterPassword !== 'undefined' && argv.masterPassword.length > 0){
        
        var createdAccount = createAccount({
             name : argv.name,
             username : argv.username,
             password : argv.password
-       });
+       }, argv.masterPassword);
 
        console.log("Hesap olusturuldu..");
        
         // console.log(argv.name);
-    } else if(command === 'get' && typeof argv.name !== 'undefined' && argv.name.length > 0){
+    } else if(command === 'get' && typeof argv.name !== 'undefined' && argv.masterPassword.length > 0 && typeof argv.masterPassword !== 'undefined' && argv.name.length > 0){
 
-        var account =getAccount(argv.name);
+        var account =getAccount(argv.name, argv.masterPassword);
 
         if(typeof account !== 'undefined'){
             console.log(account);
@@ -89,30 +103,73 @@ account.password : Password987&
 
 // Array...
 
-function createAccount(account) {
+function getAccounts(masterPassword){
+
+    // getItemSync accounts verisini cek..
+    var encryptedAccounts = storage.getItemSync("accounts");
+    var accounts = [];
+
+    // decrypt
+    if(typeof encryptedAccounts !== 'undefined'){
+    var bytes = crypto.AES.decrypt(encryptedAccounts, masterPassword);
+    accounts = JSON.parse(bytes.toString(crypto.enc.Utf8));
+    }
+
+
+    // return accounts array
+
+    return accounts;
+
+}
+
+
+function saveAccounts(accounts, masterPassword){
+    
+    // encrypt accounts
+    var encryptedAccounts = crypto.AES.encrypt(JSON.stringify(accounts), masterPassword);
+
+    // setItemSyncs
+    storage.setItemSync('accounts', encryptedAccounts.toString());
+
+    // return accounts
+    return accounts;
+
+}
+
+
+function createAccount(account, masterPassword) {
 
     // Onceki kayitlari al // getItemSync
-    var accounts = storage.getItemSync("accounts");
+    // var accounts = storage.getItemSync("accounts");
+    // getAccounts()
+    var accounts = getAccounts(masterPassword);
 
     // Onceki kayıt yoksa... array olustur...
-    if(typeof accounts === 'undefined'){
+   /* if(typeof accounts === 'undefined'){
         accounts = [];
-    }
+    } */
 
     // account verisini array icerisine kaydet 
     accounts.push(account);
 
     //setItemSync ile kalıcı olarak kaydet
-    storage.setItemSync("accounts", accounts);
+    // storage.setItemSync("accounts", accounts);
+
+    // saveAccounts()
+    saveAccounts(accounts, masterPassword);
 
     return account;
 
 }
 
-function getAccount(accountName) {
+function getAccount(accountName, masterPassword) {
     
     // getItemSync ile veriyi getirmek... (Array)
-    var accounts = storage.getItemSync("accounts");
+    // var accounts = storage.getItemSync("accounts");
+
+    // getAccounts()
+    var accounts = getAccounts(masterPassword);
+
     var matchedAccount;
 
     // forEach butun kayitlari dolasarak accountName bulunacak..
