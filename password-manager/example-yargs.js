@@ -1,4 +1,19 @@
-var argv = require("yargs").argv;
+var argv = require("yargs")
+    .command('hello','Kullanicilari Selamlar!!!', function(yargs){
+        yargs.options({
+            name : {
+                demand : true,
+                description : 'Adinizi gireceginiz argumandir!!',
+                alias: 'n'
+            },
+            lastname : {
+                demand : true,
+                description : 'Soyadinizi gireceginiz argumandir!!',
+                alias : 'l'
+            }
+        }).help('help');
+    }).help("help")
+    .argv;
 var command = argv._[0];
 
 // console.log(command);
@@ -14,5 +29,5 @@ if (command === 'hello' && typeof argv.name !== 'undefined' && typeof argv.lastn
 } else if (command === "hello" && typeof argv.name !== 'undefined') {
     console.log('Hello ' + argv.name + '!');
 } else if (command === "hello") {
-    console.log("Hello World")
+    console.log("Hello World");
 }
