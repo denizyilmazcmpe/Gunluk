@@ -1,5 +1,74 @@
 var storage = require("node-persist");
 storage.initSync();
+var argv = require("yargs")
+    .command('create', 'Yeni bir hesap olusturur..', function(yargs){
+        yargs.options({
+            name : {
+                demand: true,
+                alias : 'n',
+                description : 'Hesap adi (Twitter, Facebook..)',
+                type : 'string'
+            },
+            username : {
+                demand: true,
+                alias : 'u',
+                description : 'Hesabin kullanici adi ya da sifresi.',
+                type : 'string'
+            },
+            password : {
+                demand: true,
+                alias : 'p',
+                description : 'Hesabiniza ait parola',
+                type : 'string'
+            }
+        }).help('help');
+    })
+    .command('get', 'Hesap bilgilerini goruntulemeyi saglar..', function(yargs){
+        yargs.options({
+            name : {
+                demand: true,
+                alias : 'n',
+                description : 'Hesap adi (Twitter, Facebook..)',
+                type : 'string'
+            }
+        }).help('help');
+    }).help('help')
+    .argv;
+
+    var command = argv._[0];
+
+    if(command === 'create' && typeof argv.name !== 'undefined' && argv.name.length > 0
+    && typeof argv.username !== 'undefined' && argv.username.length > 0 
+    && typeof argv.password !== 'undefined' && argv.password.length > 0){
+       
+       var createdAccount = createAccount({
+            name : argv.name,
+            username : argv.username,
+            password : argv.password
+       });
+
+       console.log("Hesap olusturuldu..");
+       
+        // console.log(argv.name);
+    } else if(command === 'get' && typeof argv.name !== 'undefined' && argv.name.length > 0){
+
+        var account =getAccount(argv.name);
+
+        if(typeof account !== 'undefined'){
+            console.log(account);
+        }else {
+            console.log("Aradiginiz kayit bulunamamistir!!");
+        }
+
+        console.log(account);
+    } else {
+        console.log("Lütfen gecerli bir komut giriniz..");
+    }
+    
+    // console.log(argv);
+
+
+   
 
 // create
 //      --name
@@ -66,9 +135,9 @@ createAccount({
 });
 */
 
-var twitterAccount = getAccount("Twitter");
+// var twitterAccount = getAccount("Twitter");
 
-console.log(twitterAccount);
+// console.log(twitterAccount);
 
 
 
