@@ -1,5 +1,19 @@
 extends layout
 
 block content
-  h1= title
+include ./header
+  h1= Bu bir #{title} örneğidir!!
   p Welcome to #{title}
+  div
+    h2 Test Başlığı
+    p Jade Güzel bir Template Motoru!!
+  div(id="myDiv", class="container") Bu attribute içeren element!!
+  a(href="http://www.google.com.tr", target="_new") Resmi Web Sayfam!!
+  // Bu html kod bloğunda gözükecektir.. yorum satırı..
+  p Örnek Yazı | Deniz Yılmaz | Jade
+  script,
+    console.log("test");
+    // alert("deneme");
+
+block footer
+  div (id="footer") Footer bölümü...
