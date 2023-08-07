@@ -46,15 +46,22 @@ if (typeof argv.l === 'string' && argv.l.length > 0) {
 
     console.log("Lokasyon bilgisi girildi...");
 
-    weather(argv.l, function (currentWeather) {
-        console.log(currentWeather);
-    })
 
+    weather(argv.l).then(function (currentWeather) {
+        console.log(currentWeather);
+    }, function (error) {
+        console.log(error);
+    })
+    /*
+        weather(argv.l, function (currentWeather) {
+            console.log(currentWeather);
+        })
+    */
     // console.log("location...");
 } else {
 
     console.log("Lokasyon bilgisi girilmedi... Tahmin ediliyor...");
-
+/*
     location(function (location) {
 
         if (!location) {
@@ -73,6 +80,14 @@ if (typeof argv.l === 'string' && argv.l.length > 0) {
             // console.log("Ulke : " + location.country);
 
         }
+    })
+*/
+    location().then(function (location) {
+        return weather(location.city);
+    }).then(function (currentWeather) {
+        console.log(currentWeather);
+    }).catch(function(error){
+        console.log(error);
     })
 
 }
