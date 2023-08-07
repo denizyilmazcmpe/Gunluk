@@ -9,4 +9,14 @@ router.get('/', function(req, res, next) {
   res.redirect("http://google.com.tr");
 });
 
+router.post("/create", function(req, res, next){
+  res.send("Kayıt için kullanılacak route bölümü!");
+})
+router.put("/create", function(req, res, next){
+  res.send("Update için kullanılacak method");
+})
+router.delete("/create", function(req, res, next){
+  res.send("Silme işlemi için kullanılacak metot");
+})
+
 module.exports = router;
