@@ -8,7 +8,7 @@ var User = require("./user");
 db.on('error', console.error.bind(console, 'Bağlantı hatası:'));
 db.once('open', function() {
     console.log("Veritabanına bağlantı sağlandı!!");
-    
+/*   
     var user_1 = new User({
         ad : "Deniz",
         soyad : "Yılmaz",
@@ -19,4 +19,9 @@ db.once('open', function() {
     user_1.save().then( res => {
         console.log('kullanıcı kaydedildi!!');
     });
+*/
+
+    User.find({}).then( res2 => {
+        console.log(res2);
+    })
 });
