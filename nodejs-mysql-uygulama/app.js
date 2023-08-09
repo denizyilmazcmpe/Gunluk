@@ -49,7 +49,12 @@ connection.connect(function(err){
 
     if(command == "create" && typeof argv.name !== "undefined" && typeof argv.lastname !== "undefined" &&typeof argv.email !== "undefined" && argv.name.length > 0 && argv.lastname.length > 0 && argv.email.length > 0){
     
-    
+        var sql = "INSERT INTO personel (ad, soyad, email) VALUES ('" + argv.name + "','" + argv.lastname + "','" + argv.email + "')";
+
+        connection.query(sql, function(err, result){
+            if(err) throw err;
+            console.log('Kayıt başarılı bir şekilde eklendi!!!');
+        })
 
     } else if(command == "delete" && typeof argv.id !== "undefined" && argv.id.length > 0){
     
