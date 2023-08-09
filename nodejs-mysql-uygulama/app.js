@@ -37,7 +37,41 @@ var argv = require("yargs")
 
 var command = argv._[0];
 
-console.log(command);
+var connection =  mysql.createConnection({
+    host : "127.0.0.1",
+    user : "root",
+    password : "root",
+    database : "nodejs"
+});
+
+connection.connect(function(err){
+    if(err) throw err;
+
+    if(command == "create" && typeof argv.name !== "undefined" && typeof argv.lastname !== "undefined" &&typeof argv.email !== "undefined" && argv.name.length > 0 && argv.lastname.length > 0 && argv.email.length > 0){
+    
+    
+
+    } else if(command == "delete" && typeof argv.id !== "undefined" && argv.id.length > 0){
+    
+    } else if(command == "list"){
+    
+        connection.query("SELECT * FROM personel", function(err, result){
+            if(err) throw err;
+            result.forEach(element => {
+                console.log('Ad....: ' + element.ad );
+                console.log('Soyad....: ' + element.soyad );
+                console.log('E-posta....: ' + element.email );
+                console.log('-----------------------------');
+            });
+        })
+
+    }
+})
+
+
+
+
+// console.log(command);
 
 // create
     // -n, -l, -e
