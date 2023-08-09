@@ -10,7 +10,7 @@ db.once('open', async function () {
     try {
         console.log("Veritabanına bağlantı sağlandı!!");
 
-/*
+        /*
         // Kullanıcı ekleme işlemi
         const user_1 = new User({
             ad: "Deniz",
@@ -21,12 +21,13 @@ db.once('open', async function () {
 
         await user_1.save();
         console.log('Kullanıcı kaydedildi!!');
-*/
+        */
 
         // Tüm kullanıcıları listeleme işlemi
         const allUsers = await User.find({});
         console.log(allUsers);
 
+        /*
         // Kullanıcı silme işlemi
         const deletedUser = await User.findOneAndDelete({ _id: "64d2461426ade4d5bff4f84a" });
         if (deletedUser) {
@@ -36,6 +37,22 @@ db.once('open', async function () {
         } else {
             console.log('Kayıt bulunamadı veya silinemedi.');
         }
+        */
+
+        // Kullanıcı güncelleme işlemi
+        const updatedUser = await User.findByIdAndUpdate(
+            "64d25269f2c4201f0484ddae",
+            { ad: "Deniz", soyad: "Yılmaz" },
+            { new: true } // Bu, güncellenmiş dokümanın güncellenmiş halini döndürmesini sağlar
+        );
+
+        if (updatedUser) {
+            console.log('Kayıt güncellendi!!');
+            console.log('Güncellenen kullanıcı:', updatedUser);
+        } else {
+            console.log('Kayıt bulunamadı veya güncellenemedi.');
+        }
+
     } catch (error) {
         console.error('İşlem hatası:', error);
     }
