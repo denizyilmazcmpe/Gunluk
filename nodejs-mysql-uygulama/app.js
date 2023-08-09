@@ -57,7 +57,12 @@ connection.connect(function(err){
         })
 
     } else if(command == "delete" && typeof argv.id !== "undefined" && argv.id.length > 0){
-    
+        
+        connection.query("DELETE FROM personel WHERE id = " + argv.id , function(err, result){
+            if(err) throw err;
+            console.log('Kayıt başarılı bir şekilde silindi!!!');
+        })
+
     } else if(command == "list"){
     
         connection.query("SELECT * FROM personel", function(err, result){
