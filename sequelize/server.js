@@ -4,6 +4,11 @@ const sequelize = new Sequelize('todo_api', 'root', 'root',{
     dialect : 'mysql',
 });
 
+const User = sequelize.define('user', {
+    username : Sequelize.STRING,
+    email : Sequelize.STRING
+});
+
 sequelize.sync().then(() => {
     console.log('Veritabanına baglanti saglandi...');
 })
