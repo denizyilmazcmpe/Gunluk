@@ -75,7 +75,22 @@ app.put("/todos/:id", function(req, res){
 // DELETE /todos : Silme
 app.delete("/todos/:id", function(req, res){
 
-    res.send("delete metoduyla silme işlemi yapılır...");
+    let todoId = req.params.id;
+    db.Todo.destroy({
+        where : {
+            id : todoId
+        }
+    }).then(function(rowDeleted){
+        if(rowDeleted === 0){
+            res.status(404).send({
+                error : "Silmek istediğiniz kayıt bulunamamıştır..."
+            });
+        } else {
+            res.status(204).send();
+        }
+    }, function(){
+        res.status(500).send();
+    })
 })
 
 db.sequelize.sync().then(function(){
