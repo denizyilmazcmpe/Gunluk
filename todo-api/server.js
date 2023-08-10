@@ -1,10 +1,14 @@
 var express = require("express");
 var app = express();
+var bodyParser = require("body-parser");
+var _ = require("underscore");
 var PORT = 3000;
 
 /**************** Database Bağlantısı *******************/
 var db = require("./db");
 /******************************************************/
+
+app.use(bodyParser.json());
 
 // GET /todos : Listeleme
 app.get("/todos", function(req, res){
@@ -15,19 +19,21 @@ app.get("/todos", function(req, res){
 // POST /todos : Kaydetme
 app.post("/todos", function(req, res){
 
-    res.send("post metoduyla kayıt işlemi yapılır...")
+    let body = _.pick(req.body, "description", "completed");
+    console.log(body);
+
 })
 
 // PUT /todos : Güncelleme
 app.put("/todos/:id", function(req, res){
 
-    res.send("put metoduyla update işlemi yapılır...")
+    res.send("put metoduyla update işlemi yapılır...");
 })
 
 // DELETE /todos : Silme
 app.delete("/todos/:id", function(req, res){
 
-    res.send("delete metoduyla silme işlemi yapılır...")
+    res.send("delete metoduyla silme işlemi yapılır...");
 })
 
 db.sequelize.sync().then(function(){
