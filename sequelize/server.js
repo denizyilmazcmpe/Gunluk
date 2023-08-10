@@ -39,17 +39,17 @@ sequelize.sync({ force: false }).then(() => {
     /*************** create ***************/
     /*
     User.create({
-        username : "Fitnet",
-        email : "fitnetyilmaz@gmail.com",
-        phone : "5325425264",
+        username : "Sahil",
+        email : "sahilyilmaz@gmail.com",
+        phone : "5325425262",
         isActive : true
     }).then(
         row => {
             console.log(row.toJSON());
         })
     */
-    /*************** Listeleme ***************/
-
+    /*************** find ***************/
+    /*
     User.findAll({
         where : {
             //isActive : false
@@ -75,5 +75,40 @@ sequelize.sync({ force: false }).then(() => {
     User.findByPk(1).then(function(row){
         console.log(row.toJSON());
     });
+    */
+    /*************** destroy ***************/
+    /*
+    User.destroy({
+        where : {
+            id : 1
+        }
+    }).then(function(rowDeleted){
+
+        if(rowDeleted === 0) {
+            console.log('Böyle bir id bulunmamaktadır!!');
+        } else {
+            console.log('Silme işlemi başarılıdır');
+        }
+
+    })
+    */
+    /*************** update ***************/
+
+    // Değiştirmek istenen kayıt bulunur
+    // bulunan kayıt inst. değişiklik yapılır.
+
+    User.findOne({
+        where : {
+            id : 22
+        }
+    }).then(function(user){
+        if(user){
+            user.update({
+                email : "safideha@gmail.com"
+            }).then(function(usr){
+                console.log(usr.toJSON());
+            })
+        }
+    })
 
 })
