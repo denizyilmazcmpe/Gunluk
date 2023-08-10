@@ -6,6 +6,13 @@ var PORT = 3000;
 var db = require("./db");
 /******************************************************/
 
+app.get("/todos", function(req, res){
+
+    res.send("tüm todo elemanları listelenir...");
+
+})
+
+
 db.sequelize.sync().then(function(){
     console.log('Database bağlantısı başarılıdır');
     app.listen(PORT, function(){
