@@ -14,11 +14,11 @@ router.get("/create", function(req, res, next){
 })
 
 router.post("/create", function(req, res, next){
-  
+    res.send("Veriler kaydedildi..");
 })
 
-router.delete("/create/:id", function(req, res, next){
-
+router.get("/delete/:id", function(req, res, next){
+    res.send("Veri silindi..");
 })
 
 module.exports = router;
