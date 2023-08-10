@@ -13,7 +13,14 @@ app.use(bodyParser.json());
 // GET /todos : Listeleme
 app.get("/todos", function(req, res){
 
-    res.send("get metoduyla listeleme işlemi yapılır...");
+    db.Todo.findAll({
+        where : {
+           // completed : false
+        }
+    }).then(function(todos){
+        res.json(todos);
+    })
+
 })
 
 // POST /todos : Kaydetme
@@ -23,7 +30,8 @@ app.post("/todos", function(req, res){
     db.Todo.create(body).then(function(todo){
         res.json(todo.toJSON());
     }, function(e){
-        res.json(e.toJSON());
+        //res.json(e.toJSON());
+        res.status(500).send();
     })
 
 })
@@ -31,7 +39,37 @@ app.post("/todos", function(req, res){
 // PUT /todos : Güncelleme
 app.put("/todos/:id", function(req, res){
 
-    res.send("put metoduyla update işlemi yapılır...");
+    let todoId = req.params.id;
+    let body = _.pick(req.body, "description", "completed");
+    let attributes = {};
+
+    if(body.hasOwnProperty("description")){
+        attributes.description = body.description;
+    }
+    if(body.hasOwnProperty("completed")){
+        attributes.completed = body.completed;
+    }
+    db.Todo.findOne({
+        where : {
+            id : todoId
+        }
+    }).then(function(todo){
+        if(todo){
+
+            todo.update(attributes).then(function(todo){
+                res.json(todo.toJSON());
+            }, function(){
+                res.status(400).send();
+            })
+
+        } else {
+            res.status(404).send({
+                error : "Aradığınız obje bulunamadı!!!"
+            })
+        }
+    }, function(){
+        res.status(500).send();
+    })
 })
 
 // DELETE /todos : Silme
