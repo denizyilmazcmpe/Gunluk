@@ -20,7 +20,11 @@ app.get("/todos", function(req, res){
 app.post("/todos", function(req, res){
 
     let body = _.pick(req.body, "description", "completed");
-    console.log(body);
+    db.Todo.create(body).then(function(todo){
+        res.json(todo.toJSON());
+    }, function(e){
+        res.json(e.toJSON());
+    })
 
 })
 
