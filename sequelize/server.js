@@ -36,15 +36,44 @@ const User = sequelize.define('user', {
 
 sequelize.sync({ force: false }).then(() => {
     console.log('Veritabanına baglanti saglandi...');
-
+    /*************** create ***************/
+    /*
     User.create({
-        username : "Sahil",
-        email : "sahilyilmaz@gmail.com",
-        phone : "5325425263",
-        isActive : false
+        username : "Fitnet",
+        email : "fitnetyilmaz@gmail.com",
+        phone : "5325425264",
+        isActive : true
     }).then(
         row => {
             console.log(row.toJSON());
         })
+    */
+    /*************** Listeleme ***************/
+
+    User.findAll({
+        where : {
+            //isActive : false
+        },
+        order : [
+            ['id', 'DESC']
+        ],
+        raw : true
+    }).then(function(users){
+        console.log(users);
+    }, function(){
+
+    });
+
+    User.findOne({
+        where : {
+            isActive : false
+        }
+    }).then(function(row){
+        console.log(row.toJSON());
+    });
+
+    User.findByPk(1).then(function(row){
+        console.log(row.toJSON());
+    });
 
 })
